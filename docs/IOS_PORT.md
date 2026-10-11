@@ -70,9 +70,12 @@ BUNDLE_ID=org.example.soh DEVELOPMENT_TEAM=ABCDE12345 \
 Version and deployment settings can also be overridden:
 
 ```sh
-SOH_IOS_VERSION=1.2.3 SOH_IOS_BUILD_NUMBER=42 DEPLOYMENT_TARGET=14.0 \
+SOH_IOS_VERSION=1.2.3 SOH_IOS_BUILD_NUMBER=42 DEPLOYMENT_TARGET=15.0 \
   scripts/build-ios.sh --device
 ```
+
+The default deployment target is 15.0, the minimum accepted by Xcode 27's
+Apple mobile SDKs. Override `DEPLOYMENT_TARGET` when using another SDK.
 
 ## Apple TV builds
 

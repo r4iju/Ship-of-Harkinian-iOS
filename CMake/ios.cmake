@@ -26,6 +26,9 @@ FetchContent_Declare(
     GIT_TAG v1.6.54
     OVERRIDE_FIND_PACKAGE
 )
+# libpng's prebuilt Apple header path does not generate pngprefix.h. A cached
+# AWK from the initial tvOS configure incorrectly adds that file as a source.
+unset(AWK CACHE)
 FetchContent_MakeAvailable(PNG)
 
 # libpng's build-tree target is not exported under its installed package name.

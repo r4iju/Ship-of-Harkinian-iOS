@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MODE="${1:---simulator}"
-DEPLOYMENT_TARGET="${DEPLOYMENT_TARGET:-14.0}"
+DEPLOYMENT_TARGET="${DEPLOYMENT_TARGET:-15.0}"
 BUNDLE_ID="${BUNDLE_ID:-com.shipofharkinian.ios}"
 SOH_IOS_VERSION="${SOH_IOS_VERSION:-0.1.0}"
 SOH_IOS_BUILD_NUMBER="${SOH_IOS_BUILD_NUMBER:-1}"

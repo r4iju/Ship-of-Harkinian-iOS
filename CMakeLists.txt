@@ -21,6 +21,7 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(Ship VERSION 9.2.3 LANGUAGES C CXX)
+include(CMake/local-branding.cmake)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
 set(SPDLOG_LEVEL_TRACE 0)
@@ -321,16 +322,16 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 add_custom_target(CreateOSXIcons
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/macosx/soh.iconset
-    COMMAND sips -z 16 16     ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_16x16.png
-    COMMAND sips -z 32 32     ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_16x16@2x.png
-    COMMAND sips -z 32 32     ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_32x32.png
-    COMMAND sips -z 64 64     ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_32x32@2x.png
-    COMMAND sips -z 128 128   ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_128x128.png
-    COMMAND sips -z 256 256   ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_128x128@2x.png
-    COMMAND sips -z 256 256   ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_256x256.png
-    COMMAND sips -z 512 512   ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_256x256@2x.png
-    COMMAND sips -z 512 512   ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_512x512.png
-    COMMAND cp                ${CMAKE_SOURCE_DIR}/soh/macosx/sohIcon.png ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_512x512@2x.png
+    COMMAND sips -z 16 16     "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_16x16.png
+    COMMAND sips -z 32 32     "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_16x16@2x.png
+    COMMAND sips -z 32 32     "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_32x32.png
+    COMMAND sips -z 64 64     "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_32x32@2x.png
+    COMMAND sips -z 128 128   "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_128x128.png
+    COMMAND sips -z 256 256   "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_128x128@2x.png
+    COMMAND sips -z 256 256   "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_256x256.png
+    COMMAND sips -z 512 512   "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_256x256@2x.png
+    COMMAND sips -z 512 512   "${SOH_APPLE_MAC_ICON}" --out ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_512x512.png
+    COMMAND cp                "${SOH_APPLE_MAC_ICON}" ${CMAKE_BINARY_DIR}/macosx/soh.iconset/icon_512x512@2x.png
     COMMAND iconutil -c icns -o ${CMAKE_BINARY_DIR}/macosx/soh.icns ${CMAKE_BINARY_DIR}/macosx/soh.iconset
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Creating OSX icons ..."

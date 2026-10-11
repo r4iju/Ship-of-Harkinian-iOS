@@ -254,11 +254,11 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
     set_source_files_properties(
-        "${CMAKE_CURRENT_SOURCE_DIR}/ios/Assets.xcassets"
+        "${SOH_APPLE_ASSET_CATALOG}"
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources
     )
     target_sources(${PROJECT_NAME} PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/ios/Assets.xcassets"
+        "${SOH_APPLE_ASSET_CATALOG}"
     )
 endif()
 

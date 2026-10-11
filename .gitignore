@@ -468,3 +468,6 @@ soh/properties.h
 /clang-format.exe
 *.o2r
 local.properties
+
+# Local app names and licensed artwork
+/local-branding/

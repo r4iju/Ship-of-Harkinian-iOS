@@ -4,8 +4,10 @@
 <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
+    <key>CFBundleDisplayName</key>
+    <string>@SOH_APPLE_DISPLAY_NAME@</string>
     <key>CFBundleName</key>
-    <string>Ship of Harkinian</string>
+    <string>@SOH_APPLE_DISPLAY_NAME@</string>
     <key>CFBundleExecutable</key>
     <string>soh</string>
     <key>CFBundleGetInfoString</key>

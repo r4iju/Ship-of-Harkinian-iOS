@@ -210,3 +210,13 @@ browser uploader and CloudKit at runtime. Real-device passes are also required
 for code signing,
 multi-touch feel, safe-area layout on each target device, suspend/resume,
 controller pairing, audio interruptions, and long-session thermal behavior.
+
+## Local app branding
+
+Apple builds optionally load `local-branding/branding.cmake`, which is ignored
+by Git together with its artwork. Set `SOH_APPLE_DISPLAY_NAME` for the app's
+visible name, `SOH_APPLE_ASSET_CATALOG` to a local `.xcassets` catalog with
+`AppIcon` and `AppIconTV`, and `SOH_APPLE_MAC_ICON` to a 1024×1024 PNG.
+Reconfigure the build after changing these values. The defaults use the
+repository's existing name and icons. Bundle identifiers and save paths do
+not change. Keep supplied artwork inside `local-branding/`.

@@ -306,6 +306,18 @@ OTRGlobals::OTRGlobals() {
     context->InitConfiguration();
     context->InitConsoleVariables();
 
+#ifdef __TVOS__
+    // The desktop defaults retain N64's 20 FPS. Give the TV a smooth,
+    // bounded render workload while preserving settings explicitly chosen later.
+    auto tvSettings = context->GetConsoleVariables();
+    tvSettings->RegisterInteger(CVAR_SETTING("InterpolationFPS"), 60);
+    tvSettings->RegisterInteger(CVAR_MSAA_VALUE, 2);
+    tvSettings->RegisterInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 1);
+    tvSettings->RegisterInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 1);
+    tvSettings->RegisterInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", 1080);
+    tvSettings->Save();
+#endif
+
 #ifdef __ANDROID__
     Ship::Mobile::SetToggleButtonVisible(CVarGetInteger("gDroidHideToggleButton", 0) == 0);
     Ship::Mobile::SetFreeLookTouchEnabled(CVarGetInteger("gDroidFreeLookTouch", 1) != 0);

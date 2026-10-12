@@ -230,3 +230,25 @@ Set `SOH_LOCAL_GAME_ARCHIVE` in ignored `local-branding/branding.cmake` to
 archive as a runtime resource; the existing loader discovers it in the bundle.
 This local requirement takes precedence over upstream import instructions.
 Keep the archive and source ROM out of Git and public distribution.
+
+### Apple TV rendering defaults
+
+The tvOS app supplies missing settings with 60 FPS frame interpolation,
+2× multisample anti-aliasing, and a fixed 1080p game render resolution.
+This avoids rendering every game frame at the TV's 4K output resolution
+and retains the original game logic rate. Explicit saved settings take
+precedence; these defaults do not reset controller mappings or saves.
+Original game textures retain their original detail.
+
+For local device verification, capture the Apple TV output with
+`xcrun devicectl device capture screenshot --device <udid> --destination <file.png>`.
+Use an Instruments Metal System Trace to measure frame timing, and distinguish
+gameplay from menus when reporting results. Simulator performance does not
+establish the physical Apple TV's frame rate.
+
+For Apple rendering regression checks, use a 1080p game buffer on a simulator
+with a 4K display at 2× scale and enable MSAA. The render buffer then matches
+the logical viewport but remains offscreen. Verify the title demo, file menu,
+and gameplay stay visible, and run with `MTL_DEBUG_LAYER=1` to check Metal API
+validation. The renderer must use `ViewportMatchesRendererResolution()`
+consistently for framebuffer setup and coordinate offsets.

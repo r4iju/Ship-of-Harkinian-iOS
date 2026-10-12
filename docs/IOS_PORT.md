@@ -220,3 +220,13 @@ visible name, `SOH_APPLE_ASSET_CATALOG` to a local `.xcassets` catalog with
 Reconfigure the build after changing these values. The defaults use the
 repository's existing name and icons. Bundle identifiers and save paths do
 not change. Keep supplied artwork inside `local-branding/`.
+
+### Local builds must include the game
+
+For this fork's local installations, include the user-owned game archive in
+the app bundle so first launch does not require an import or HTTP upload.
+Set `SOH_LOCAL_GAME_ARCHIVE` in ignored `local-branding/branding.cmake` to
+`${CMAKE_SOURCE_DIR}/local-branding/oot.o2r`. The Apple build packages this
+archive as a runtime resource; the existing loader discovers it in the bundle.
+This local requirement takes precedence over upstream import instructions.
+Keep the archive and source ROM out of Git and public distribution.

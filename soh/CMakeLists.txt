@@ -252,6 +252,12 @@ else()
     add_library(${PROJECT_NAME} SHARED ${ALL_FILES})
 endif()
 
+if(SOH_LOCAL_GAME_ARCHIVE AND CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
+    set_source_files_properties("${SOH_LOCAL_GAME_ARCHIVE}"
+        PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    target_sources(${PROJECT_NAME} PRIVATE "${SOH_LOCAL_GAME_ARCHIVE}")
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
     set_source_files_properties(
         "${SOH_APPLE_ASSET_CATALOG}"
@@ -1015,6 +1021,9 @@ configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_
 INSTALL(TARGETS soh DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION ../Resources COMPONENT ship)
+if(SOH_LOCAL_GAME_ARCHIVE)
+    INSTALL(FILES "${SOH_LOCAL_GAME_ARCHIVE}" DESTINATION ../Resources RENAME oot.o2r COMPONENT ship)
+endif()
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS|Android")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()

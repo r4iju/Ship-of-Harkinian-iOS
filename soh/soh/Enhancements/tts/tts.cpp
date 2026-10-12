@@ -1,5 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
+#include "DialogueVoices.h"
 
 #include <cassert>
 #include <ship/resource/File.h>
@@ -1051,6 +1052,11 @@ void RegisterOnDialogMessageHook() {
 
                 uint16_t size = msgCtx->decodedTextLen;
                 auto decodedMsg = Message_TTS_Decode(msgCtx->msgBufDecoded, 0, size);
+#if defined(__APPLE__)
+                if (DialogueVoices_HasCurrentPage()) {
+                    decodedMsg.clear();
+                }
+#endif
                 SpeechSynthesizer::Instance->Speak(decodedMsg.c_str(), GetLanguageCode());
             } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 &&
                        msgCtx->choiceIndex != ttsCurrentHighlightedChoice) {

@@ -461,6 +461,14 @@ void SohMenu::AddMenuSettings() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Enables text to speech for in game dialog"));
 #endif
+#if defined(__APPLE__)
+    AddWidget(path, "Recorded Dialogue Voices", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("DialogueVoices"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip(
+            "Plays available recordings from the bundled voice pack. Unrecorded pages keep their original text.\n"
+            "English dialogue only. Text to Speech can read pages without a recording."));
+#endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
@@ -530,6 +538,12 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("Volume.Master"))
         .RaceDisable(false)
         .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""));
+#if defined(__APPLE__)
+    AddWidget(path, "Dialogue Voice Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("Volume.Dialogue"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format(""));
+#endif
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.MainMusic"))
         .RaceDisable(false)

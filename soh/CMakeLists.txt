@@ -130,6 +130,9 @@ file(GLOB_RECURSE soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cp
 # Add specific files that don't match the pattern
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/savestates_extern.inc)
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin|iOS|tvOS")
+    list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/tts/DialogueVoices.mm)
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
     list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/ios/SOHiCloudSync.mm)
@@ -256,6 +259,16 @@ if(SOH_LOCAL_GAME_ARCHIVE AND CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
     set_source_files_properties("${SOH_LOCAL_GAME_ARCHIVE}"
         PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     target_sources(${PROJECT_NAME} PRIVATE "${SOH_LOCAL_GAME_ARCHIVE}")
+endif()
+
+if(SOH_LOCAL_VOICE_PACK AND CMAKE_SYSTEM_NAME MATCHES "Darwin|iOS|tvOS")
+    file(GLOB SOH_LOCAL_VOICE_FILES CONFIGURE_DEPENDS "${SOH_LOCAL_VOICE_PACK}/*.wav")
+    list(APPEND SOH_LOCAL_VOICE_FILES "${SOH_LOCAL_VOICE_PACK}/manifest.json")
+    if(CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
+        set_source_files_properties(${SOH_LOCAL_VOICE_FILES}
+            PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/dialogue-voices")
+        target_sources(${PROJECT_NAME} PRIVATE ${SOH_LOCAL_VOICE_FILES})
+    endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS")
@@ -1023,6 +1036,9 @@ INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMP
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION ../Resources COMPONENT ship)
 if(SOH_LOCAL_GAME_ARCHIVE)
     INSTALL(FILES "${SOH_LOCAL_GAME_ARCHIVE}" DESTINATION ../Resources RENAME oot.o2r COMPONENT ship)
+endif()
+if(SOH_LOCAL_VOICE_PACK)
+    INSTALL(FILES ${SOH_LOCAL_VOICE_FILES} DESTINATION ../Resources/dialogue-voices COMPONENT ship)
 endif()
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS|Android")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)

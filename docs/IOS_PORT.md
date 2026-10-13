@@ -202,14 +202,24 @@ archives and platform-specific settings local.
 
 ## Current validation boundary
 
-The iPad simulator build validates compilation, linking, bundling, startup, and
-the universal iOS platform wiring. The tvOS SDK build validates compilation,
-linking, platform metadata, controller declarations, and bundle resources. A
-tvOS simulator runtime or physical Apple TV is still required to exercise the
-browser uploader and CloudKit at runtime. Real-device passes are also required
-for code signing,
-multi-touch feel, safe-area layout on each target device, suspend/resume,
-controller pairing, audio interruptions, and long-session thermal behavior.
+Local verification on 2026-10-13 includes native macOS gameplay, tvOS simulator
+gameplay and save/reload, and signed installation on Living Room TV. The physical
+TV pass exercised file loading, analogue movement, targeting, sword attacks,
+shield raising, enemy damage, death/continue, in-game saving, and reopening the
+save after a full app restart. It used an isolated save fixture and a temporary
+SDL virtual controller, not human Bluetooth button presses. Original TV saves
+and configuration were restored byte-for-byte, and the normal signed app was
+reinstalled without QA helpers. Its bundled data launched to the title screen.
+
+A presented-frame probe in the physical TV QA build recorded 3,599 intervals
+over 59.97 seconds in the Deku Tree scene: 60.00 presented FPS, 16.67 ms median
+and 16.90 ms p95 interval. This is one scene with probes active, not a whole-game
+performance guarantee. Physical game CoreAudio output contained nonzero PCM;
+TV speaker listening was not performed. Enemy defeat, full playthrough,
+controller pairing/button feel, suspend/resume, interruptions and long-session
+thermal behavior remain unverified. Browser import and CloudKit were not part
+of this bundled-data pass. Private evidence remains under ignored
+`build-host/gameplay-qa/`.
 
 ## Local app branding
 
@@ -241,10 +251,27 @@ precedence; these defaults do not reset controller mappings or saves.
 Original game textures retain their original detail.
 
 For local device verification, capture the Apple TV output with
-`xcrun devicectl device capture screenshot --device <udid> --destination <file.png>`.
+`device-run --lease <request-id> -- devicectl device capture screenshot --device <udid> --destination <file.png>`.
+Agents must claim the shared `device-queue` resource `physical:<udid>` first.
 Use an Instruments Metal System Trace to measure frame timing, and distinguish
 gameplay from menus when reporting results. Simulator performance does not
 establish the physical Apple TV's frame rate.
+
+### Installed local launch and installation
+
+On Emanuel's Mac, launch the bundled native app with:
+
+```sh
+open '/Users/emanuel/Applications/The Legend of Zelda - Ocarina of Time.app'
+```
+
+These commands are for a human terminal. Agents use the same device arguments
+through `device-run --lease <request-id> -- devicectl ...` after claiming a turn:
+
+```sh
+xcrun devicectl device install app --device a5ef39a5001ef59dec9c2fa15838447215252137 'build-tvos-device/soh/Release-appletvos/Ship of Harkinian.app'
+xcrun devicectl device process launch --device a5ef39a5001ef59dec9c2fa15838447215252137 xyz.raiju.shipofharkinian.tvos
+```
 
 For Apple rendering regression checks, use a 1080p game buffer on a simulator
 with a 4K display at 2× scale and enable MSAA. The render buffer then matches
